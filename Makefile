@@ -9,9 +9,9 @@ Help
 
 \033[32m migrate:\033[0m Apply migration to database
 
-\033[32m run:\033[0m Run application server
+\033[32m test:\033[0m Run tests for the application
 
-\033[32m createsuperuser:\033[0m Launch interactive prompt to create a superuser
+\033[32m run:\033[0m Run application server
 
 \033[32m startapp:\033[0m Create a new application (domain) within project \033[34m usage: make startapp app=app_name \033[0m
 
@@ -52,8 +52,8 @@ createsuperuser: # Interactive prompt to create a superuser
 startapp: # Create a new application (domain) within project
 	poetry run python manage.py startapp $(app)
 
-test-runner: install migrate
-	poetry run python manage.py test
+test: install migrate
+	poetry run pytest
 
 seed:
 	poetry run python manage.py seed

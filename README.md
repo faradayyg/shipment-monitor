@@ -1,6 +1,6 @@
 # Shipment
 This document describes the setup on an up to date macOS machine. If you need to work on a non-mac machine, please keep in mind that you'll need to adapt things to suit your needs in places.
-I reckon this would work as-is on a Linux machine.
+I reckon this should work as-is on a Linux machine.
 
 
 ## Prerequisites
@@ -13,7 +13,7 @@ I reckon this would work as-is on a Linux machine.
 
 
 > 💡
-> Requirements marked with `*` are only necessary for bare machine setup
+> Requirements marked with `*` are only necessary for bare machine setup (Setup without docker)
 
 ## Setup
 
@@ -25,8 +25,7 @@ To set up this project, copy the `.env.template` file to `.env` and fill it up w
 - [Install poetry](https://python-poetry.org/docs/) or `pip install poetry`
 - Copy the `.env.template` to `.env`
 - Adjust the `.env` file, fill in the variables with the correct values
-- Run the initial setup: `make setup`
-- Seed the data `make seed`
+- Run the initial setup: `make setup` (This also seeds the data)
 - Run the project: `make run`
 
 ### Using Docker
