@@ -32,7 +32,7 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.pytest.ini_options]
-DJANGO_SETTINGS_MODULE = "parcelLab.settings"
+DJANGO_SETTINGS_MODULE = "parcelLab.settings_test"
 python_files = ["tests/*/test_*"]
 
 [tool.ruff]

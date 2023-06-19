@@ -22,6 +22,7 @@ def config(key: str, default: any = "", cast: type = str):
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+TEST = config("TEST", "False", bool)
 
 
 # Quick-start development settings - unsuitable for production
@@ -104,6 +105,9 @@ DATABASES = {
         "PORT": config("POSTGRES_PORT", "5432"),
     }
 }
+
+if TEST:
+    DATABASES["default"] = {"ENGINE": "django.db.backends.sqlite3"}
 
 
 # Password validation

@@ -39,3 +39,7 @@ The application is available at http://127.0.0.1:8000
 
 There is a redoc OpenAPI documentation available at http://127.0.0.1:8000/redoc
 Swagger UI is also available at http://127.0.0.1:8000/swagger
+
+
+## Running Tests
+ - `make test`

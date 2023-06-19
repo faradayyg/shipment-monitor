@@ -52,8 +52,8 @@ createsuperuser: # Interactive prompt to create a superuser
 startapp: # Create a new application (domain) within project
 	poetry run python manage.py startapp $(app)
 
-test: install migrate
-	poetry run pytest
+test: install
+	poetry run pytest -svv
 
 seed:
 	poetry run python manage.py seed

@@ -1,15 +1,18 @@
 import dataclasses as _dc
 
-from drf_yasg import openapi
-from drf_yasg.utils import swagger_auto_schema
-from rest_framework import generics, serializers
+import rest_framework as _drf
+from drf_yasg import openapi as _openapi
+from drf_yasg.utils import swagger_auto_schema as _swagger_auto_schema
+from rest_framework import generics as _generics
 
+import core.services.shipment as _shipment_service
 from core.services import weather as _weather_service
 from shipments.models import Shipment
 
 
-class ShipmentInformationSerializer(serializers.ModelSerializer):
-    weather_information = serializers.SerializerMethodField()
+class ShipmentInformationSerializer(_drf.serializers.ModelSerializer):
+    weather_information = _drf.serializers.SerializerMethodField()
+    status = _drf.serializers.SerializerMethodField()
 
     def get_weather_information(self, instance: Shipment) -> dict:
         location = _weather_service.LocationDTO.from_address(instance.receiver_address)
@@ -18,6 +21,9 @@ class ShipmentInformationSerializer(serializers.ModelSerializer):
                 location
             )
         )
+
+    def get_status(self, instance: Shipment) -> str:
+        return _shipment_service.standardise_shipment_status_codes(instance.status)
 
     class Meta:
         model = Shipment
@@ -36,22 +42,22 @@ class ShipmentInformationSerializer(serializers.ModelSerializer):
         )
 
 
-class ShipmentInformationViewSet(generics.ListAPIView):
+class ShipmentInformationViewSet(_generics.ListAPIView):
     serializer_class = ShipmentInformationSerializer
 
-    @swagger_auto_schema(
+    @_swagger_auto_schema(
         manual_parameters=[
-            openapi.Parameter(
+            _openapi.Parameter(
                 name="tracking_number",
-                in_=openapi.IN_QUERY,
+                in_=_openapi.IN_QUERY,
                 description="Filter by tracking number",
-                type=openapi.TYPE_STRING,
+                type=_openapi.TYPE_STRING,
             ),
-            openapi.Parameter(
+            _openapi.Parameter(
                 name="carrier",
-                in_=openapi.IN_QUERY,
+                in_=_openapi.IN_QUERY,
                 description="Carrier short name",
-                type=openapi.TYPE_STRING,
+                type=_openapi.TYPE_STRING,
             ),
         ]
     )
