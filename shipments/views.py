@@ -11,9 +11,6 @@ from shipments.models import Shipment
 class ShipmentInformationSerializer(serializers.ModelSerializer):
     weather_information = serializers.SerializerMethodField()
 
-    def _extract_location_data_from_address(self, address: str):
-        return address.split(",")[1].strip().split(" ")[0]
-
     def get_weather_information(self, instance: Shipment) -> dict:
         location = _weather_service.LocationDTO.from_address(instance.receiver_address)
         return _dc.asdict(
