@@ -48,7 +48,11 @@ class Command(BaseCommand):
             raise TableNotEmptyError
 
     def handle(self, *args: Any, **options: Any) -> None:
-        self._ensure_table_is_empty()
+        try:
+            self._ensure_table_is_empty()
+        except TableNotEmptyError:
+            pass
+
         with open("shipments/seed_data.csv", "r") as csv_file, transaction.atomic():
             self._validate_csv_format(csv_file)
             reader = csv.DictReader(csv_file)

@@ -28,7 +28,11 @@ class WeatherInformationService:
         if weather_info := _dj_cache.cache.get(cache_key):
             return weather_info
 
-        weather_info = provider.fetch_location_weather_info(location=location)
+        try:
+            weather_info = provider.fetch_location_weather_info(location=location)
+        except Exception:
+            """TODO: Implement retry mechanism, enqueue a job to fetch the data"""
+
         _dj_cache.cache.set(cache_key, weather_info, 3600 * 2)
         return weather_info
 

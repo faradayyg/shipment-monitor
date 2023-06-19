@@ -1,8 +1,8 @@
 import dataclasses as _dc
 
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import generics, serializers
-from rest_framework.request import Request
-from rest_framework.response import Response
 
 from core.services import weather as _weather_service
 from shipments.models import Shipment
@@ -40,14 +40,34 @@ class ShipmentInformationSerializer(serializers.ModelSerializer):
 
 
 class ShipmentInformationViewSet(generics.ListAPIView):
-    queryset = Shipment.objects.all()
     serializer_class = ShipmentInformationSerializer
-    filter_param: str
 
-    def filter_queryset(self, queryset):
-        filtered = super().filter_queryset(queryset)
-        return filtered.filter(tracking_number=self.filter_param)
+    @swagger_auto_schema(
+        manual_parameters=[
+            openapi.Parameter(
+                name="tracking_number",
+                in_=openapi.IN_QUERY,
+                description="Filter by tracking number",
+                type=openapi.TYPE_STRING,
+            ),
+            openapi.Parameter(
+                name="carrier",
+                in_=openapi.IN_QUERY,
+                description="Carrier short name",
+                type=openapi.TYPE_STRING,
+            ),
+        ]
+    )
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
 
-    def get(self, request: Request, tracking_number: str) -> Response:
-        self.filter_param = tracking_number
-        return super().get(self, request, tracking_number=tracking_number)
+    def get_queryset(self):
+        queryset = Shipment.objects.all()
+        tracking_number = self.request.query_params.get("tracking_number")
+        carrier = self.request.query_params.get("carrier")
+
+        if tracking_number:
+            queryset = queryset.filter(tracking_number=tracking_number)
+        if carrier:
+            queryset = queryset.filter(carrier=carrier)
+        return queryset

@@ -4,7 +4,7 @@ from shipments.views import ShipmentInformationViewSet
 
 urlpatterns = [
     path(
-        r"<str:tracking_number>",
+        r"shipments/",
         ShipmentInformationViewSet.as_view(),
         name="shipment_detail_url",
     )
